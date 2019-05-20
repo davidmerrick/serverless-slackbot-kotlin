@@ -8,7 +8,7 @@ provider:
 
 functions:
   event_receive:
-    handler: com.merricklabs.karmabot.KarmaBotHandler
+    handler: com.merricklabs.karmabot.handlers.KarmaBotHandler
     memorySize: 128
     events:
       - http:

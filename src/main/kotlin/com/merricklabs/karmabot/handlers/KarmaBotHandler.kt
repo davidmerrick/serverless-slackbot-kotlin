@@ -1,4 +1,4 @@
-package com.merricklabs.karmabot
+package com.merricklabs.karmabot.handlers
 
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.RequestHandler
