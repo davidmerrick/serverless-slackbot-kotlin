@@ -15,3 +15,6 @@ functions:
           path: event/receive
           method: post
           cors: ruet
+
+package:
+  artifact: build/libs/karmabot-dev.jar
