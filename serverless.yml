@@ -1,0 +1,18 @@
+service: karmabot-tutorial
+
+frameworkVersion: ">=1.1.0 <2.0.0"
+
+provider:
+  name: aws
+  region: us-west-2
+  runtime: java8
+
+functions:
+  event_receive:
+    handler: com.merricklabs.karmabot.KarmaBotHandler
+    memorySize: 128
+    events:
+      - http:
+          path: event/receive
+          method: post
+          cors: true

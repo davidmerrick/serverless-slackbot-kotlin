@@ -1,4 +1,7 @@
 .gradle
+.idea
+.env
+.envrc
 /build/
 
 # Ignore Gradle GUI config
