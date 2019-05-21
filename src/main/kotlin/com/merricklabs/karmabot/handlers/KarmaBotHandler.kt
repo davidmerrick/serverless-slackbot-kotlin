@@ -6,9 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.merricklabs.karmabot.models.ApiGatewayResponse
 import com.merricklabs.karmabot.slack.SlackBotMessage
-import com.merricklabs.karmabot.slack.SlackCallbackEvent
-import com.merricklabs.karmabot.slack.SlackChallengeEvent
-import com.merricklabs.karmabot.slack.SlackEvent
+import com.merricklabs.karmabot.slack.SlackCallbackMessage
+import com.merricklabs.karmabot.slack.SlackChallengeMessage
+import com.merricklabs.karmabot.slack.SlackMessage
 import mu.KotlinLogging
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
@@ -26,23 +26,23 @@ class KarmaBotHandler : RequestHandler<Map<String, Any>, ApiGatewayResponse> {
         val body = input!!["body"] as String
         log.info("Received payload: $body")
         mapper.registerModule(KotlinModule())
-        val event = mapper.readValue(body, SlackEvent::class.java)
-        return when(event.type) {
+        val message = mapper.readValue(body, SlackMessage::class.java)
+        return when(message.type) {
             "url_verification" -> {
                 log.info("Received challenge")
-                val challengeEvent = mapper.readValue(body, SlackChallengeEvent::class.java)
-                ApiGatewayResponse(200, challengeEvent.challenge)
+                val challengeMessage = mapper.readValue(body, SlackChallengeMessage::class.java)
+                ApiGatewayResponse(200, challengeMessage.challenge)
             }
             "event_callback" -> {
-                val callbackEvent = mapper.readValue(body, SlackCallbackEvent::class.java)
-                sendMessage(callbackEvent)
+                val callbackMessage = mapper.readValue(body, SlackCallbackMessage::class.java)
+                sendMessage(callbackMessage)
                 ApiGatewayResponse(200)
             }
             else -> ApiGatewayResponse(200)
         }
     }
 
-    private fun sendMessage(event: SlackCallbackEvent){
+    private fun sendMessage(event: SlackCallbackMessage){
         val message = SlackBotMessage(event.event.channel, "Hey")
         val okHttpClient = OkHttpClient()
         val json = MediaType.get("application/json; charset=utf-8")

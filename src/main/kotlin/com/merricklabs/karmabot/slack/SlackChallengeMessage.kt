@@ -1,6 +1,6 @@
 package com.merricklabs.karmabot.slack
 
-class SlackChallengeEvent : SlackEvent {
+class SlackChallengeMessage : SlackMessage {
     val token: String
     val challenge: String
 

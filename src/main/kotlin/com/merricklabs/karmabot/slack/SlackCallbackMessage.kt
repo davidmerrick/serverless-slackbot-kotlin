@@ -3,7 +3,7 @@ package com.merricklabs.karmabot.slack
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-class SlackCallbackEvent : SlackEvent {
+class SlackCallbackMessage : SlackMessage {
     val token: String
     val event: EventPayload
 
