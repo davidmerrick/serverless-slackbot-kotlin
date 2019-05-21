@@ -36,9 +36,9 @@ class EchoBotHandler : RequestHandler<Map<String, Any>, ApiGatewayResponse> {
             }
             "event_callback" -> {
                 val callbackMessage = mapper.readValue(body, SlackCallbackMessage::class.java)
-                if(callbackMessage.event.isAtMention() && callbackMessage.event.text.contains("@$botUserId")){
+                if(callbackMessage.event.isAtMention() && callbackMessage.event.text.contains("<@$botUserId>")){
                     log.info("Is an at-mention of our bot.")
-                    sendMessage(callbackMessage)
+                    sendReply(callbackMessage)
                 }
                 ApiGatewayResponse(200)
             }
@@ -46,8 +46,8 @@ class EchoBotHandler : RequestHandler<Map<String, Any>, ApiGatewayResponse> {
         }
     }
 
-    private fun sendMessage(event: SlackCallbackMessage){
-        val message = SlackBotMessage(event.event.channel, "Hey")
+    private fun sendReply(message: SlackCallbackMessage){
+        val message = SlackBotMessage(message.event.channel, message.event.text.replace("<@$botUserId>", "<@${message.event.user}>").trim())
         val okHttpClient = OkHttpClient()
         val json = MediaType.get("application/json; charset=utf-8")
         val body = RequestBody.create(json, mapper.writeValueAsString(message))
@@ -58,7 +58,7 @@ class EchoBotHandler : RequestHandler<Map<String, Any>, ApiGatewayResponse> {
                 .post(body)
                 .build()
         val response = okHttpClient.newCall(request).execute()
-        log.info("Got response: $response")
+        log.info("Got response from Slack API: $response")
     }
 
     companion object {
