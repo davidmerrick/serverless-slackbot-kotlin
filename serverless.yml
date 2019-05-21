@@ -4,12 +4,12 @@ provider:
   name: aws
   region: us-west-2
   runtime: java8
-  timeout: 10
+  timeout: 20
 
 functions:
   event_receive:
     handler: com.merricklabs.karmabot.handlers.KarmaBotHandler
-    memorySize: 128
+    memorySize: 256
     events:
       - http:
           path: event/receive

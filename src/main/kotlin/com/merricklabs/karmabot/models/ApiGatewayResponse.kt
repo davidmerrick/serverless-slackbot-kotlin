@@ -21,9 +21,9 @@ class ApiGatewayResponse(
     }
 
     class Builder {
-        var objectMapper: ObjectMapper = ObjectMapper()
+        private var objectMapper: ObjectMapper = ObjectMapper()
 
-        var statusCode: Int = 200
+        val statusCode  = 200
         var rawBody: String? = null
         var headers: Map<String, String>? = Collections.emptyMap()
         var objectBody: Any? = null
