@@ -11,6 +11,7 @@ provider:
   timeout: 20
   environment:
     BOT_TOKEN: ${env:BOT_TOKEN}
+    BOT_USER_ID: ${env:BOT_USER_ID}
   iamRoleStatements:
     - Effect: Allow
       Action:

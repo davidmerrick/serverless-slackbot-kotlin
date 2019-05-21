@@ -1,5 +1,8 @@
 package com.merricklabs.karmabot.slack
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class EventPayload(
         val client_msg_id: String,
         val type: String,
@@ -7,5 +10,8 @@ data class EventPayload(
         val user: String,
         val ts: String,
         val channel: String,
-        val event_ts: String
-)
+        val event_ts: String,
+        val channel_type: String?
+){
+    fun isAtMention() = type == "app_mention"
+}

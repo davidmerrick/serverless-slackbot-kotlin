@@ -21,6 +21,7 @@ class KarmaBotHandler : RequestHandler<Map<String, Any>, ApiGatewayResponse> {
 
     private val mapper = ObjectMapper()
     private val botToken = System.getenv()["BOT_TOKEN"]
+    private val botUserId = System.getenv()["BOT_USER_ID"]
 
     override fun handleRequest(input: Map<String, Any>?, context: Context?): ApiGatewayResponse {
         val body = input!!["body"] as String
@@ -35,7 +36,10 @@ class KarmaBotHandler : RequestHandler<Map<String, Any>, ApiGatewayResponse> {
             }
             "event_callback" -> {
                 val callbackMessage = mapper.readValue(body, SlackCallbackMessage::class.java)
-                sendMessage(callbackMessage)
+                if(callbackMessage.event.isAtMention() && callbackMessage.event.text.contains("@$botUserId")){
+                    log.info("Is an at-mention of our bot.")
+                    sendMessage(callbackMessage)
+                }
                 ApiGatewayResponse(200)
             }
             else -> ApiGatewayResponse(200)
