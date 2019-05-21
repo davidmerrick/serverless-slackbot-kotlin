@@ -1,8 +1,4 @@
-service: karmabot
-
-custom:
-  tableName: karmabot
-  dynamoEndpoint: https://dynamodb.us-west-2.amazonaws.com
+service: echobot
 
 provider:
   name: aws
@@ -12,21 +8,10 @@ provider:
   environment:
     BOT_TOKEN: ${env:BOT_TOKEN}
     BOT_USER_ID: ${env:BOT_USER_ID}
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - dynamodb:Query
-        - dynamodb:Scan
-        - dynamodb:GetItem
-        - dynamodb:PutItem
-        - dynamodb:UpdateItem
-        - dynamodb:DeleteItem
-      Resource:
-        - arn:aws:dynamodb:*:*:table/${self:custom.tableName}
 
 functions:
   event_receive:
-    handler: com.merricklabs.karmabot.handlers.KarmaBotHandler
+    handler: com.merricklabs.echobot.handlers.EchoBotHandler
     memorySize: 256
     events:
       - http:
@@ -35,21 +20,4 @@ functions:
           cors: ruet
 
 package:
-  artifact: build/libs/karmabot-dev.jar
-
-resources:
-  Resources:
-    KarmaDynamoDbTable:
-      Type: 'AWS::DynamoDB::Table'
-      DeletionPolicy: Retain
-      Properties:
-        AttributeDefinitions:
-          - AttributeName: karma_id
-            AttributeType: S
-        KeySchema:
-          - AttributeName: karma_id
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-        TableName: ${self:custom.tableName}
+  artifact: build/libs/echobot-dev.jar

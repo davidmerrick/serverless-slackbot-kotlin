@@ -1,4 +1,4 @@
-package com.merricklabs.karmabot.slack
+package com.merricklabs.echobot.slack
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 

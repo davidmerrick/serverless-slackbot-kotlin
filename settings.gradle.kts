@@ -1,1 +1,1 @@
-rootProject.name = "karmabot"
+rootProject.name = "echobot"

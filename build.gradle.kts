@@ -1,4 +1,4 @@
-group = "com.merricklabs.karmabot"
+group = "com.merricklabs.echobot"
 version = "dev"
 
 buildscript {

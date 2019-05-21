@@ -1,14 +1,14 @@
-package com.merricklabs.karmabot.handlers
+package com.merricklabs.echobot.handlers
 
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.RequestHandler
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
-import com.merricklabs.karmabot.models.ApiGatewayResponse
-import com.merricklabs.karmabot.slack.SlackBotMessage
-import com.merricklabs.karmabot.slack.SlackCallbackMessage
-import com.merricklabs.karmabot.slack.SlackChallengeMessage
-import com.merricklabs.karmabot.slack.SlackMessage
+import com.merricklabs.echobot.models.ApiGatewayResponse
+import com.merricklabs.echobot.slack.SlackBotMessage
+import com.merricklabs.echobot.slack.SlackCallbackMessage
+import com.merricklabs.echobot.slack.SlackChallengeMessage
+import com.merricklabs.echobot.slack.SlackMessage
 import mu.KotlinLogging
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
@@ -17,7 +17,7 @@ import okhttp3.RequestBody
 
 private val log = KotlinLogging.logger {}
 
-class KarmaBotHandler : RequestHandler<Map<String, Any>, ApiGatewayResponse> {
+class EchoBotHandler : RequestHandler<Map<String, Any>, ApiGatewayResponse> {
 
     private val mapper = ObjectMapper()
     private val botToken = System.getenv()["BOT_TOKEN"]

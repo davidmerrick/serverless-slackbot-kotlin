@@ -1,4 +1,4 @@
-package com.merricklabs.karmabot.slack
+package com.merricklabs.echobot.slack
 
 class SlackChallengeMessage : SlackMessage {
     val token: String

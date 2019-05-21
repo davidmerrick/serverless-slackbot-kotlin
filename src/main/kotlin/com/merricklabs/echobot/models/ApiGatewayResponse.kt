@@ -1,4 +1,4 @@
-package com.merricklabs.karmabot.models
+package com.merricklabs.echobot.models
 
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
