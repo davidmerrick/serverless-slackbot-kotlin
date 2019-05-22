@@ -50,11 +50,11 @@ class EchoBotHandler : RequestHandler<Map<String, Any>, ApiGatewayResponse> {
     }
 
     private fun sendReply(message: SlackCallbackMessage){
-        val message = SlackBotMessage(message.event.channel, message.event.text.replace("<@$botUserId>", "<@${message.event.user}>").trim())
+        val responseMessage = SlackBotMessage(message.event.channel, message.event.text.replace("<@$botUserId>", "<@${message.event.user}>").trim())
         val okHttpClient = OkHttpClient()
         val json = MediaType.get("application/json; charset=utf-8")
-        val body = RequestBody.create(json, mapper.writeValueAsString(message))
-        log.info("Sending message back to Slack: ${mapper.writeValueAsString(message)}")
+        val body = RequestBody.create(json, mapper.writeValueAsString(responseMessage))
+        log.info("Sending message back to Slack: ${mapper.writeValueAsString(responseMessage)}")
         val request = Request.Builder()
                 .header("Authorization", "Bearer $botToken")
                 .url(SLACK_URL)
