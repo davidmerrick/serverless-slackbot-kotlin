@@ -23,10 +23,13 @@ class EchoBotHandler : RequestHandler<Map<String, Any>, ApiGatewayResponse> {
     private val botToken = System.getenv()["BOT_TOKEN"]
     private val botUserId = System.getenv()["BOT_USER_ID"]
 
+    init {
+        mapper.registerModule(KotlinModule())
+    }
+
     override fun handleRequest(input: Map<String, Any>?, context: Context?): ApiGatewayResponse {
         val body = input!!["body"] as String
         log.info("Received payload: $body")
-        mapper.registerModule(KotlinModule())
         val message = mapper.readValue(body, SlackMessage::class.java)
         return when(message.type) {
             "url_verification" -> {
