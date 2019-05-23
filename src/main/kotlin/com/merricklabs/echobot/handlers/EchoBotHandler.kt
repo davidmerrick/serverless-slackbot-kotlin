@@ -39,7 +39,8 @@ class EchoBotHandler : RequestHandler<Map<String, Any>, ApiGatewayResponse> {
             }
             "event_callback" -> {
                 val callbackMessage = mapper.readValue(body, SlackCallbackMessage::class.java)
-                if(callbackMessage.event.isAtMention() && callbackMessage.event.text.contains("<@$botUserId>")){
+                // Only respond to at-mentions of our bot and ignore messages from bots (ourselves or otherwise)
+                if(callbackMessage.event.text.contains("<@$botUserId>") && callbackMessage.event.bot_id == null){
                     log.info("Is an at-mention of our bot.")
                     sendReply(callbackMessage)
                 }
@@ -61,7 +62,7 @@ class EchoBotHandler : RequestHandler<Map<String, Any>, ApiGatewayResponse> {
                 .post(body)
                 .build()
         val response = okHttpClient.newCall(request).execute()
-        log.info("Got response from Slack API: $response")
+        log.info("Got response from Slack API: $response with body ${response.body()!!.string()}")
     }
 
     companion object {

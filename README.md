@@ -8,6 +8,7 @@ Inspired by: https://www.sentialabs.io/2018/08/16/Building-a-Slackbot-with-Serve
 
 - Set up a Slack bot in your workspace with event subscriptions for `message.channels` and `message.groups`.
 - Set the `BOT_TOKEN` environment variable to the one Slack provides: https://api.slack.com/apps/<your-app-id>/oauth.
+- Add oAuth permission scope `chat:write:bot` for your bot to be able to send messages.
 - Deploy the app with `./gradlew deploy`.
 - Point the `Request URL` in the app config to the endpoint url returned from that deployment.
 - Once you know your bot's user id, redeploy with the `BOT_USER_ID` environment variable set to that.
