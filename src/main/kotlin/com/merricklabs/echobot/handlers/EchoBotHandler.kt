@@ -27,20 +27,19 @@ class EchoBotHandler : RequestHandler<Map<String, Any>, ApiGatewayResponse> {
         mapper.registerModule(KotlinModule())
     }
 
-    override fun handleRequest(input: Map<String, Any>?, context: Context?): ApiGatewayResponse {
-        val body = input!!["body"] as String
-        log.info("Received payload: $body")
-        val message = mapper.readValue(body, SlackMessage::class.java)
+    override fun handleRequest(input: Map<String, Any>, context: Context?): ApiGatewayResponse {
+        log.info("Received payload: ${input["body"]}")
+        val message = mapper.convertValue(input["body"], SlackMessage::class.java)
         return when(message.type) {
             "url_verification" -> {
                 log.info("Received challenge")
-                val challengeMessage = mapper.readValue(body, SlackChallengeMessage::class.java)
+                val challengeMessage = mapper.convertValue(input["body"], SlackChallengeMessage::class.java)
                 ApiGatewayResponse(200, challengeMessage.challenge)
             }
             "event_callback" -> {
-                val callbackMessage = mapper.readValue(body, SlackCallbackMessage::class.java)
+                val callbackMessage = mapper.convertValue(input["body"], SlackCallbackMessage::class.java)
                 // Only respond to at-mentions of our bot and ignore messages from bots (ourselves or otherwise)
-                if(callbackMessage.event.text.contains("<@$botUserId>") && callbackMessage.event.bot_id == null){
+                if(isAtMention(callbackMessage)){
                     log.info("Is an at-mention of our bot.")
                     sendReply(callbackMessage)
                 }
@@ -49,6 +48,10 @@ class EchoBotHandler : RequestHandler<Map<String, Any>, ApiGatewayResponse> {
             else -> ApiGatewayResponse(200)
         }
     }
+
+    private fun isAtMention(message: SlackCallbackMessage) = message.event.type == "app_mention"
+            && message.event.text.contains("<@$botUserId>")
+            && message.event.bot_id == null
 
     private fun sendReply(message: SlackCallbackMessage){
         val responseMessage = SlackBotMessage(message.event.channel, message.event.text.replace("<@$botUserId>", "<@${message.event.user}>").trim())
